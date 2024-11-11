@@ -2,8 +2,6 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import create_engine
-from sqlalchemy.exc import OperationalError
 from datetime import datetime
 
 # Load environment variables
@@ -13,7 +11,7 @@ load_dotenv()
 app = Flask(__name__)
 
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql://{os.getenv('user')}:{os.getenv('password')}@{os.getenv('host')}/{os.getenv('database')}"
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql+pymysql://{os.getenv('user')}:{os.getenv('password')}@{os.getenv('host')}/{os.getenv('database')}"
 
 db = SQLAlchemy(app)
 
