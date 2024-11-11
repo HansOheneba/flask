@@ -1,0 +1,79 @@
+{% extends "base.html" %} {% block head %}
+<title>To-Do</title>
+{% endblock %} {% block body %}
+<div class="container mx-auto my-8 p-4">
+  <h1 class="text-3xl font-bold text-center mb-6">To-Do List</h1>
+
+  <div class="flex justify-center mb-6">
+    <form action="/" method="POST" class="flex space-x-2">
+      <input
+        type="text"
+        class="border border-gray-300 rounded p-2 w-80"
+        placeholder="Enter a new task"
+        name="content"
+        id="content"
+        required
+      />
+      <button
+        type="submit"
+        class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded"
+      >
+        Add Task
+      </button>
+    </form>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-300">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="py-2 px-4 border-b">#</th>
+          <th class="py-2 px-4 border-b">Content</th>
+          <th class="py-2 px-4 border-b">Status</th>
+          <th class="py-2 px-4 border-b">Date Created</th>
+          <th class="py-2 px-4 border-b">Actions</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+        <!-- Example Row 1 -->
+        <!-- <tr>
+                            <td class="py-2 px-4 border-b">1</td>
+                            <td class="py-2 px-4 border-b">Task 1 description</td>
+                            <td class="py-2 px-4 border-b">Pending</td>
+                            <td class="py-2 px-4 border-b">2023-11-11 14:30</td>
+                            <td class="py-2 px-4 border-b space-x-2">
+                                <a href=""><button class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded">Update</button></a>
+                                <a href=""><button class="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded">Delete</button></a>
+                            </td>
+                        </tr> -->
+        {% for task in tasks %}
+        <tr>
+          <td class="py-2 px-4 border-b">{{ task.id }}</td>
+          <td class="py-2 px-4 border-b">{{ task.content }}</td>
+          <td class="py-2 px-4 border-b">
+            {% if not task.completed %} Pending {% else %} Completed {% endif %}
+          </td>
+          <td class="py-2 px-4 border-b">{{ task.date_created.date() }}</td>
+          <td class="py-2 px-4 border-b space-x-2">
+            <a href=""
+              ><button
+                class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded"
+              >
+                Update
+              </button></a
+            >
+            <a href=""
+              ><button
+                class="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded"
+              >
+                Delete
+              </button></a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
