@@ -35,17 +35,6 @@
         </tr>
       </thead>
       <tbody class="text-center">
-        <!-- Example Row 1 -->
-        <!-- <tr>
-                            <td class="py-2 px-4 border-b">1</td>
-                            <td class="py-2 px-4 border-b">Task 1 description</td>
-                            <td class="py-2 px-4 border-b">Pending</td>
-                            <td class="py-2 px-4 border-b">2023-11-11 14:30</td>
-                            <td class="py-2 px-4 border-b space-x-2">
-                                <a href=""><button class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded">Update</button></a>
-                                <a href=""><button class="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded">Delete</button></a>
-                            </td>
-                        </tr> -->
         {% for task in tasks %}
         <tr>
           <td class="py-2 px-4 border-b">{{ task.id }}</td>
@@ -54,24 +43,13 @@
             {% if not task.completed %} Pending {% else %} Completed {% endif %}
           </td>
           <td class="py-2 px-4 border-b">{{ task.date_created.date() }}</td>
-          <td class="py-2 px-4 border-b space-x-2">
-            <a href=""
-              ><button
-                class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded"
-              >
-                Update
-              </button></a
-            >
-            <a href=""
-              ><button
-                class="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded"
-              >
-                Delete
-              </button></a
-            >
+           <td class="py-2 px-4 border-b space-x-2">
+            <a href="/update/{{task.id}}"><button class="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded">Update</button></a>
+            <a href="/delete/{{task.id}}"><button class="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded">Delete</button></a>
           </td>
-        </tr>
         {% endfor %}
+        </tr>
+       
       </tbody>
     </table>
   </div>
