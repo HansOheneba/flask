@@ -1,4 +1,5 @@
 import os
+import uuid
 from dotenv import load_dotenv
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
@@ -7,7 +8,6 @@ import logging
 from sqlalchemy import create_engine
 from sqlalchemy.pool import NullPool
 from werkzeug.security import generate_password_hash, check_password_hash
-
 
 
 
@@ -29,7 +29,7 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 db = SQLAlchemy(app)
 
 class Users(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     firstname = db.Column(db.String(150), nullable=False)
     lastname = db.Column(db.String(150), nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
@@ -40,9 +40,10 @@ class Users(db.Model):
 
 class Todo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
-    completed = db.Column(db.Boolean, default=False)
+    content = db.Column(db.String(255), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False) 
+    completed = db.Column(db.Boolean, default=False)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -97,6 +98,14 @@ def login():
             flash("Invalid username or password.", "danger")
     return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+    session.pop('user_id', None)
+    session.pop('user_id', None)
+    session.pop('email', None)
+    flash("You have been logged out.", "info")
+    return redirect(url_for('login'))
+
 @app.route('/terms-and-conditions/')
 def tnc():
     return render_template('tnc.html')
@@ -104,20 +113,31 @@ def tnc():
 def pp():
     return render_template('ppolicy.html')
 
-@app.route('/', methods=['POST','GET'])
+@app.route('/', methods=['POST', 'GET'])
 def index():
+    if 'user_id' not in session:
+        flash("Please log in to access this page.", "warning")
+        return redirect(url_for('login'))
+    
     if request.method == 'POST':
         task = request.form['content']
-        new_task = Todo(content=task)
+        new_task = Todo(content=task, user_id=session['user_id'])  # Assign user_id to the new task
         db.session.add(new_task)
         db.session.commit()
         return redirect("/")
     else:
-        tasks = Todo.query.order_by(Todo.date_created).all()
+        # Query only tasks created by the logged-in user
+        tasks = Todo.query.filter_by(user_id=session['user_id']).order_by(Todo.date_created).all()
         return render_template("index.html", tasks=tasks)
+
 
 @app.route('/delete/<id>')
 def delete(id):
+    
+    if 'user_id' not in session:
+        flash("Please log in to access this page.", "warning")
+        return redirect(url_for('login'))
+    
     task_to_delete = Todo.query.get_or_404(id)
     
     try:
@@ -131,6 +151,11 @@ def delete(id):
     
 @app.route('/update/<id>', methods=['GET', 'POST'])
 def update(id):
+    
+    if 'user_id' not in session:
+        flash("Please log in to access this page.", "warning")
+        return redirect(url_for('login'))
+    
     task = Todo.query.get_or_404(id)
     if request.method == 'POST':
         task.content = request.form['content']
