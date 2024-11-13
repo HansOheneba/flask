@@ -1,0 +1,24 @@
+<svg width="84" height="100" viewBox="0 0 84 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Paper" filter="url(#filter0_dd_45_408)">
+<path id="Paper_2" d="M23.6162 59.7831H60.2908C62.1322 59.7831 63.6249 58.2904 63.6249 56.4491V10.0022L53.6227 0H23.6162C21.7748 0 20.2821 1.49271 20.2821 3.33406V56.4491C20.2821 58.2904 21.7748 59.7831 23.6162 59.7831Z" fill="#DAF0FF"/>
+<path id="Corner" d="M53.6226 0L63.6248 10.0022H53.6226V0Z" fill="#6DB7FB"/>
+</g>
+<defs>
+<filter id="filter0_dd_45_408" x="0.282104" y="0" width="83.3428" height="99.7831" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="4" operator="erode" in="SourceAlpha" result="effect1_dropShadow_45_408"/>
+<feOffset dy="8"/>
+<feGaussianBlur stdDeviation="4"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.04 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_45_408"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feMorphology radius="4" operator="erode" in="SourceAlpha" result="effect2_dropShadow_45_408"/>
+<feOffset dy="20"/>
+<feGaussianBlur stdDeviation="12"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0627451 0 0 0 0 0.0941176 0 0 0 0 0.156863 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="effect1_dropShadow_45_408" result="effect2_dropShadow_45_408"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_45_408" result="shape"/>
+</filter>
+</defs>
+</svg>

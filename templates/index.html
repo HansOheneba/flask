@@ -1,9 +1,7 @@
-{% extends "base.html" %} {% block head %}
-<title>To-Do</title>
-{% endblock %} {% block body %}
+{% extends "sidebar.html" %}  {% block content %}
 <div class="container mx-auto my-8 p-4">
   <h1 class="text-3xl font-bold text-center mb-6">
-    To-Do List of {{ session['username'] }}
+    To-Do List
   </h1> 
 </div>
 
@@ -12,7 +10,6 @@
 >
   <div class="bg-white rounded shadow p-6 m-4 w-full lg:w-3/4 lg:max-w-lg">
     <div class="mb-4">
-      <h1 class="text-grey-darkest">Todo List</h1>
       <form action="/" method="POST">
         <div class="flex mt-4">
           <input
@@ -24,7 +21,7 @@
           />
           <button
             type="submit"
-            class="rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none ml-2">
+            class="bg-blue-500 text-white py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring px-7 focus:border-blue-300 w-fit font-semibold ml-1">
     
             Add
           </button>
@@ -41,17 +38,23 @@
           {{ task.content }}
         </p>
         <a href="/update/{{task.id}}">
-        <button
-          class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-white text-green border-green hover:bg-green"
+       <button
+          class=" p-2 w-10 h-10 rounded bg-blue-500 hover:bg-blue-300"
         >
-          Update
+           <img
+              src="{{ url_for('static', filename='img/edit.svg') }}"
+              alt="delete button"
+            />
         </button>
         </a>
        <a href="/delete/{{task.id}}">
          <button
-          class="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-white hover:bg-red"
+          class=" p-2 w-10 h-10 ml-2 border-2 rounded border-red-500 hover:bg-red-200"
         >
-          Remove
+           <img
+              src="{{ url_for('static', filename='img/trash-2.svg') }}"
+              alt="delete button"
+            />
         </button>
        </a>
       </div>

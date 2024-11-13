@@ -8,7 +8,7 @@ import logging
 from sqlalchemy import create_engine
 from sqlalchemy.pool import NullPool
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from cryptography.fernet import Fernet
 
 
 load_dotenv()
@@ -44,6 +44,31 @@ class Todo(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False) 
     completed = db.Column(db.Boolean, default=False)
+    
+class Passwords(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(150), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    domain = db.Column(db.String(255), nullable=False)
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.String(36), db.ForeignKey('users.id'), nullable=False)
+    user = db.relationship('Users', backref=db.backref('passwords', lazy=True))
+
+
+
+key = os.getenv('encryptionKey')
+cipher_suite = Fernet(key)
+
+def encrypt_password(password):
+    return cipher_suite.encrypt(password.encode()).decode()
+
+def decrypt_password(encrypted_password):
+    return cipher_suite.decrypt(encrypted_password.encode()).decode()
+
+
+
+
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -101,7 +126,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('user_id', None)
-    session.pop('user_id', None)
+    session.pop('username', None)
     session.pop('email', None)
     flash("You have been logged out.", "info")
     return redirect(url_for('login'))
@@ -112,6 +137,46 @@ def tnc():
 @app.route('/privacy-policy/')
 def pp():
     return render_template('ppolicy.html')
+@app.route('/test/')
+def test():
+    return render_template('test.html')
+
+
+@app.route('/password-manager', methods=['GET', 'POST'])
+def pmanager():
+    if 'user_id' not in session:
+        flash("Please log in to access this page.", "warning")
+        return redirect(url_for('login'))
+
+    if request.method == 'POST':
+        title = request.form['title']
+        password = request.form['password']
+        domain = request.form['domain']
+
+        encrypted_password = encrypt_password(password)
+        new_password = Passwords(
+            title=title,
+            password=encrypted_password,
+            domain=domain,
+            user_id=session['user_id']
+        )
+
+        try:
+            db.session.add(new_password)
+            db.session.commit()
+            flash("Password saved successfully.", "success")
+            return redirect(url_for('pmanager'))
+        except Exception as e:
+            logging.error(f"Error Saving Password: {e}")
+            db.session.rollback()
+            flash("An error occurred while saving the password.", "danger")
+
+    passwords = Passwords.query.filter_by(user_id=session['user_id']).all()
+    # Decrypt passwords before displaying them
+    for p in passwords:
+        p.password = decrypt_password(p.password)
+    return render_template('password.html', passwords=passwords)
+
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -121,12 +186,11 @@ def index():
     
     if request.method == 'POST':
         task = request.form['content']
-        new_task = Todo(content=task, user_id=session['user_id'])  # Assign user_id to the new task
+        new_task = Todo(content=task, user_id=session['user_id'])
         db.session.add(new_task)
         db.session.commit()
         return redirect("/")
     else:
-        # Query only tasks created by the logged-in user
         tasks = Todo.query.filter_by(user_id=session['user_id']).order_by(Todo.date_created).all()
         return render_template("index.html", tasks=tasks)
 
