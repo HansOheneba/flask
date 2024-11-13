@@ -17,6 +17,11 @@
       rel="stylesheet"
       href="{{url_for('static',filename='dist/css/output.css')}}"
     />
+    <style>
+      [x-cloak] {
+        display: none;
+      }
+    </style>
     {% block head %}{% endblock %}
   </head>
   <body class="text-gray-800">

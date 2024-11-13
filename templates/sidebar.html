@@ -71,11 +71,7 @@
             <div class="pl-2 w-full">
               <div class="flex justify-between items-center">
                 <p id="username" class="font-semibold username">{{session.username}}</p>
-                <style>
-                  [x-cloak] {
-                    display: none;
-                  }
-                </style>
+              
                 <div x-data="{ modelOpen: false }">
                   <button
                     @click="modelOpen =!modelOpen"

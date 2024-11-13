@@ -48,6 +48,7 @@ class Todo(db.Model):
 class Passwords(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(150), nullable=False)
+    username = db.Column(db.String(255), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     domain = db.Column(db.String(255), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
@@ -150,12 +151,14 @@ def pmanager():
 
     if request.method == 'POST':
         title = request.form['title']
+        username = request.form['username']
         password = request.form['password']
         domain = request.form['domain']
 
         encrypted_password = encrypt_password(password)
         new_password = Passwords(
             title=title,
+            username=username,
             password=encrypted_password,
             domain=domain,
             user_id=session['user_id']
@@ -176,6 +179,24 @@ def pmanager():
     for p in passwords:
         p.password = decrypt_password(p.password)
     return render_template('password.html', passwords=passwords)
+
+@app.route('/password/delete/<id>')
+def Passdelete(id):
+    
+    if 'user_id' not in session:
+        flash("Please log in to access this page.", "warning")
+        return redirect(url_for('login'))
+    
+    password_to_delete = Passwords.query.get_or_404(id)
+    
+    try:
+        db.session.delete(password_to_delete)
+        db.session.commit()
+        return redirect('/password-manager')
+    except Exception as e:
+        logging.error(f"Error Deleting Password: {e}")
+        db.session.rollback()
+        return 'Error Deleting Password'
 
 
 @app.route('/', methods=['POST', 'GET'])
