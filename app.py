@@ -12,11 +12,12 @@ from cryptography.fernet import Fernet
 
 
 
+
 load_dotenv()
 
 
 app = Flask(__name__)
-app.secret_key = os.getenv("secretKey")
+app.secret_key = os.getenv("secretKey", "40942f9900788e2d16945de4e6211ca44fa7759ee6f2e5f874b5f3cfba1a8d7b")
 logging.basicConfig(level=logging.INFO)
 
 
