@@ -11,6 +11,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from cryptography.fernet import Fernet
 
 
+
 load_dotenv()
 
 
@@ -118,6 +119,8 @@ def login():
             session['user_id'] = user.id
             session['username'] = user.username
             session['email'] = user.email
+            session['firstname'] = user.firstname
+            session['lastname'] = user.lastname
             flash("Login successful.", "success")
             return redirect(url_for('index'))
         else:
@@ -178,7 +181,7 @@ def pmanager():
     # Decrypt passwords before displaying them
     for p in passwords:
         p.password = decrypt_password(p.password)
-    return render_template('password.html', passwords=passwords)
+    return render_template('password.html', passwords=passwords, current_path=request.path)
 
 @app.route('/password/delete/<id>')
 def Passdelete(id):
@@ -199,8 +202,15 @@ def Passdelete(id):
         return 'Error Deleting Password'
 
 
-@app.route('/', methods=['POST', 'GET'])
+
+@app.route('/')
 def index():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    return render_template('dashboard.html', current_path=request.path)
+
+@app.route('/task-master', methods=['POST', 'GET'])
+def tasks():
     if 'user_id' not in session:
         flash("Please log in to access this page.", "warning")
         return redirect(url_for('login'))
@@ -210,10 +220,10 @@ def index():
         new_task = Todo(content=task, user_id=session['user_id'])
         db.session.add(new_task)
         db.session.commit()
-        return redirect("/")
+        return redirect("/task-master")
     else:
         tasks = Todo.query.filter_by(user_id=session['user_id']).order_by(Todo.date_created).all()
-        return render_template("index.html", tasks=tasks)
+        return render_template("task.html", tasks=tasks, current_path=request.path)
 
 
 @app.route('/delete/<id>')
@@ -254,6 +264,16 @@ def update(id):
             return 'Error Updating Task'
     else:
         return render_template('update.html', task=task)
+
+
+@app.route('/settings')
+def settings():
+    if 'user_id' not in session:
+        flash("Please log in to access this page.", "warning")
+        return redirect(url_for('login'))
+    return render_template('settings.html')
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)

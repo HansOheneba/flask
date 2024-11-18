@@ -4,65 +4,44 @@
       <div
         class="w-1/5 border-r-2 h-full border-gray-200 p-6 flex flex-col justify-between sticky top-0"
       >
-        <div class="flex flex-col gap-6">
-          <!-- <div>
-            <input
-              type="text"
-              style="background-image: url({{ url_for('static', filename='img/home.svg') }}'); background-position-x: 4%;"
-              class="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:border-indigo-500 bg-no-repeat bg-center"
-              placeholder="Search"
-            />
-          </div> -->
+        <div class="flex flex-col gap-2">
+ 
 
-          <div>
+   
+            
             <a href="/">
-              <button
-                style="
-                  background-image: url('{{ url_for('static', filename='img/home.svg') }}');
-                  background-position-x: 4%;
-                "
-                class="w-full bg-no-repeat bg-center py-3 rounded-lg"
-              >
-                <p class="text-left pl-12 font-semibold">Home</p>
-              </button>
+             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/' else ' hover:bg-gray-100' }}">
+              <img src="{{url_for('static', filename='img/home.svg')}}" alt="">
+              <h4 class="font-semibold {{'text-blue-600' if current_path == '/' else 'text-gray-700'}} ">Home</h4>
+             </div>
             </a>
-            <a href="/">
-              <button
-                style="
-                  background-image: url('{{ url_for('static', filename='img/notepad.svg') }}');
-                  background-position-x: 4%;
-                "
-                class="w-full bg-no-repeat bg-center bg-blue-100 py-3 rounded-lg"
-              >
-                <p class="text-left pl-12 font-semibold text-blue-500">Task Master</p>
-              </button>
+            <a href="/task-master">
+             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/task-master' else ' hover:bg-gray-100' }}">
+              <img src="{{url_for('static', filename='img/notepad.svg')}}" alt="">
+              <h4 class="font-semibold {{'text-blue-600' if current_path == '/task-master' else 'text-gray-700'}} ">Task Master</h4>
+             </div>
             </a>
             <a href="/password-manager">
-              <button
-                style="
-                  background-image: url('{{ url_for('static', filename='img/key.svg') }}');
-                  background-position-x: 4%;
-                "
-                class="w-full bg-no-repeat bg-center py-3 rounded-lg"
-              >
-                <p class="text-left pl-12 font-semibold">Password Manager</p>
-              </button>
+             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/password-manager' else ' hover:bg-gray-100' }}">
+              <img src="{{url_for('static', filename='img/key.svg')}}" alt="">
+              <h4 class="font-semibold {{'text-blue-600' if current_path == '/password-manager' else 'text-gray-700'}} ">Password Manager</h4>
+             </div>
             </a>
-          </div>
+
+
+
+
+
+
         </div>
 
         <div>
-          <a href="settings.php">
-            <button
-              style="
-                background-image: url('{{ url_for('static', filename='img/settings.svg') }}');
-                background-position-x: 4%;
-              "
-              class="w-full bg-no-repeat bg-center py-3 rounded-lg my-3"
-            >
-              <p class="text-left pl-12 font-semibold">Settings</p>
-            </button>
-          </a>
+           <a href="/settings">
+             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 mb-3 {{ ' bg-blue-200' if current_path == '/settings' else ' hover:bg-gray-100' }}">
+              <img src="{{url_for('static', filename='img/settings.svg')}}" alt="">
+              <h4 class="font-semibold {{'text-blue-600' if current_path == '/settings' else 'text-gray-700'}} ">Settings</h4>
+             </div>
+            </a>
           <hr />
           <div class="flex pl-2 py-3">
             <div class="bg-blue-100 rounded-full h-fit p-2">

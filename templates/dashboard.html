@@ -1,0 +1,355 @@
+{% extends "sidebar.html" %} {% block content %}
+
+<div class="w-full bg-blue-100 p-5 rounded-xl flex flex-col gap-2">
+  <h4 class="text-black font-bold text-xl">
+    Good Afternoon, {{ session.firstname }}.
+  </h4>
+  <h5 class="text-sm text-gray-600">
+    Here is the status of your activities so far:
+  </h5>
+</div>
+
+<div class="flex items-center justify-between p-5">
+  <h4 class="text-black font-semibold">Tasks</h4>
+  <a
+    href="/task-master"
+    class="mt-3 text-black hover:text-blue-600 inline-flex items-center"
+    >View Tasks
+    <svg
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      class="w-4 h-4 ml-2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7"></path>
+    </svg>
+  </a>
+</div>
+
+<div class="bg-white p-5 rounded-xl shadow">
+  <div class="grid grid-cols-3 w-full gap-3">
+    <div class="">
+      <div class="flex rounded-lg h-full bg-gray-100 p-4 flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <div
+            class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0"
+          >
+          <i class="fa-solid fa-clipboard-list"></i>
+          </div>
+          <div class="flex items-center gap-1">
+            <h2 class="text-black text-lg font-medium">10</h2>
+            <i class="fa-solid fa-chevron-right text-gray-600 text-sm"></i>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between flex-grow">
+          <p class="leading-relaxed text-base text-black">
+           All tasks
+          </p>
+      
+        </div>
+      </div>
+    </div>
+    <div class="">
+      <div class="flex rounded-lg h-full bg-gray-100 p-4 flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <div
+            class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0"
+          >
+          <i class="fa-solid fa-check"></i>
+          </div>
+          <div class="flex items-center gap-1">
+            <h2 class="text-black text-lg font-medium">6</h2>
+            <i class="fa-solid fa-chevron-right text-gray-600 text-sm"></i>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between flex-grow">
+          <p class="leading-relaxed text-base text-black">
+           Completed tasks
+          </p>
+      
+        </div>
+      </div>
+    </div>
+    <div class="">
+      <div class="flex rounded-lg h-full bg-gray-100 p-4 flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <div
+            class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0"
+          >
+          <i class="fa-regular fa-hourglass-half"></i>
+          </div>
+          <div class="flex items-center gap-1">
+            <h2 class="text-black text-lg font-medium">4</h2>
+            <i class="fa-solid fa-chevron-right text-gray-600 text-sm"></i>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between flex-grow">
+          <p class="leading-relaxed text-base text-black">
+           Tasks due
+          </p>
+      
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="flex items-center justify-between p-5 mt-10">
+  <h4 class="text-black font-semibold">Passwords</h4>
+  <a
+    href="/task-master"
+    class="mt-3 text-black hover:text-blue-600 inline-flex items-center"
+    >View Passwords
+    <svg
+      fill="none"
+      stroke="currentColor"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      class="w-4 h-4 ml-2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M5 12h14M12 5l7 7-7 7"></path>
+    </svg>
+  </a>
+</div>
+
+<div class="bg-white p-5 rounded-xl shadow">
+  <div class="grid grid-cols-2 w-full gap-3 pb-5">
+    <div class="">
+      <div class="flex rounded-lg h-full bg-gray-100 p-4 flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <div
+            class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0"
+          >
+          <i class="fa-solid fa-key"></i>
+          </div>
+          <div class="flex items-center gap-1">
+            <h2 class="text-black text-lg font-medium">10</h2>
+            <i class="fa-solid fa-chevron-right text-gray-600 text-sm"></i>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between flex-grow">
+          <p class="leading-relaxed text-base text-black">
+           All
+          </p>
+      
+        </div>
+      </div>
+    </div>
+    <div class="">
+      <div class="flex rounded-lg h-full bg-gray-100 p-4 flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <div
+            class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0"
+          >
+         <i class="fa-solid fa-exclamation"></i>
+          </div>
+          <div class="flex items-center gap-1">
+            <h2 class="text-black text-lg font-medium">6</h2>
+            <i class="fa-solid fa-chevron-right text-gray-600 text-sm"></i>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between flex-grow">
+          <p class="leading-relaxed text-base text-black">
+           Needs Attention
+          </p>
+      
+        </div>
+      </div>
+    </div>
+    <div class="">
+      <div class="flex rounded-lg h-full bg-gray-100 p-4 flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <div
+            class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0"
+          >
+        <i class="fa-solid fa-lock"></i>
+          </div>
+          <div class="flex items-center gap-1">
+            <h2 class="text-black text-lg font-medium">4</h2>
+            <i class="fa-solid fa-chevron-right text-gray-600 text-sm"></i>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between flex-grow">
+          <p class="leading-relaxed text-base text-black">
+           Secure
+          </p>
+      
+        </div>
+      </div>
+    </div>
+    <div class="">
+      <div class="flex rounded-lg h-full bg-gray-100 p-4 flex-col">
+        <div class="flex justify-between items-center mb-3">
+          <div
+            class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0"
+          >
+          <i class="fa-regular fa-trash-can"></i>
+          </div>
+          <div class="flex items-center gap-1">
+            <h2 class="text-black text-lg font-medium">4</h2>
+            <i class="fa-solid fa-chevron-right text-gray-600 text-sm"></i>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between flex-grow">
+          <p class="leading-relaxed text-base text-black">
+           Deleted
+          </p>
+      
+        </div>
+      </div>
+    </div>
+
+  </div>
+   <div x-data="{ modelOpen: false }">
+      <button
+        @click="modelOpen =!modelOpen"
+        class="bg-gray-100 text-blue-700 py-3 px-10 rounded-md hover:bg-gray-200 focus:outline-none focus:ring  focus:border-gray-600 w-full font-semibold flex gap-5 items-center"
+      >
+        <i class="fa-solid fa-plus"></i>
+        <p>New Password</p>
+      </button>
+
+      <div
+        x-show="modelOpen"
+        class="fixed flex justify-center items-center inset-0 z-50 overflow-y-auto"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div
+          class="flex items-center justify-center px-4 text-center sm:block sm:p-0"
+        >
+          <div
+            x-cloak
+            @click="modelOpen = true"
+            x-show="modelOpen"
+            x-transition:enter="transition ease-out duration-300 transform"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200 transform"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+            class="fixed inset-0 transition-opacity bg-gray-700 bg-opacity-60"
+            aria-hidden="true"
+          ></div>
+
+          <div
+            x-cloak
+            x-show="modelOpen"
+            x-transition:enter="transition ease-out duration-300 transform"
+            x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave="transition ease-in duration-200 transform"
+            x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+            x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+            class="inline-block w-[400px] p-6 my-10 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl xl:max-w-xl"
+            style="z-index: 100"
+          >
+            <div class="flex items-center justify-between">
+              <h1 class="text-xl w-full font-bold text-gray-800">
+                Add a Password
+              </h1>
+            </div>
+
+            <p class="mt-2 pb-3 text-md text-gray-800 w-fit">
+              Enter the credentials of the new entry
+            </p>
+
+            <form action="/password-manager" method="post">
+              <div class="py-2">
+                <label for="title" class="text-gray-600 text-sm font-medium"
+                  >Title</label
+                ><br />
+                <input
+                  type="text"
+                  id="title"
+                  name="title"
+                  placeholder="eg.Google"
+                  class="p-2 w-full border rounded-lg bg-white cursor-pointer text-gray-400"
+                />
+              </div>
+              <div class="py-2">
+                <label for="username" class="text-gray-600 text-sm font-medium"
+                  >Username</label
+                ><br />
+                <input
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder="eg. johndoe@gmail.com"
+                  class="p-2 w-full border rounded-lg bg-white cursor-pointer text-gray-400"
+                />
+              </div>
+
+              <div class="mb-4 py-2">
+                <label
+                  for="domain"
+                  class="block text-gray-600 text-sm font-medium"
+                  >Domain</label
+                >
+                <input
+                  type="text"
+                  id="domain"
+                  name="domain"
+                  class="p-2 w-full border rounded-md"
+                  placeholder="eg. google.com"
+                />
+              </div>
+              <div class="mb-4 py-2">
+                <label
+                  for="name"
+                  class="block text-gray-600 text-sm font-medium"
+                  >Password</label
+                >
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  class="p-2 w-full border rounded-md"
+                  placeholder="Enter password"
+                />
+              </div>
+              <div class="mb-4 py-2">
+                <label
+                  for="name"
+                  class="block text-gray-600 text-sm font-medium"
+                  >Confirm Password</label
+                >
+                <input
+                  type="password"
+                  id="confirm_password"
+                  name="confirm_password"
+                  class="p-2 w-full border rounded-md"
+                  placeholder="Confirm password"
+                />
+              </div>
+
+              <div class="flex justify-center mt-6">
+                <button
+                  @click="modelOpen = false"
+                  type="button"
+                  class="mr-2 w-1/2 py-2 text-sm tracking-wide capitalize transition-colors border border-gray-300 duration-200 transform bg-white hover:bg-gray-200 rounded-md"
+                >
+                  Cancel
+                </button>
+                <button
+                  for="show"
+                  @click="modelOpen = false"
+                  type="submit"
+                  class="justify-center bg-blue-500 text-white hover:bg-blue-600 focus:ring focus:outline-none shadow-md focus:ring-gray-100 font-medium rounded-lg text-sm w-1/2 py-2.5 text-center inline-flex items-center"
+                >
+                  <span><input type="submit" value="Add Password" /></span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+{% endblock %}
