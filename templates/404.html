@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block head %} {% endblock %} {% block body %}
+
+
+<section class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="text-center">
+        <img src="{{url_for('static', filename='img/404.svg')}}" alt="404 Image" class="w-1/2 mx-auto mb-6">
+        
+        <h1 class="text-4xl text-blue-500 font-bold text-blue-5000 mb-4">404! Page not found</h1>
+        <p class="text-black text-2xl mb-8 font-bold">Welp! The page you're looking for doesn't exist or has been moved.</p>
+
+
+        <p class="text-gray-600 mb-4">Here are some helpful links instead:</p>
+        
+        <div class="flex gap-2 w-full justify-center items-center">
+           <div> <a href="/" class="text-blue-500 hover:underline">Home</a></div>
+           <div> <a href="/login" class="text-blue-500 hover:underline">Login</a></div>
+           <div> <a href="/tasks" class="text-blue-500 hover:underline">tasks</a></div>
+           <div> <a href="/passwords" class="text-blue-500 hover:underline">Passwords</div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

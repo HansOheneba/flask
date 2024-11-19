@@ -71,6 +71,19 @@ def decrypt_password(encrypted_password):
 
 
 
+@app.errorhandler(404)
+def notFond(e):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def notFond(e):
+    return render_template('500.html'), 500
+
+
+@app.route('/error')
+def trigger_error():
+    raise Exception("This is a simulated server error!")
 
 
 
@@ -125,7 +138,7 @@ def login():
             flash("Login successful.", "success")
             return redirect(url_for('index'))
         else:
-            flash("Invalid username or password.", "danger")
+            flash("Invalid login credentials.", "danger")
     return render_template('login.html')
 
 @app.route('/logout')
@@ -147,7 +160,7 @@ def test():
     return render_template('test.html')
 
 
-@app.route('/password-manager', methods=['GET', 'POST'])
+@app.route('/passwords', methods=['GET', 'POST'])
 def pmanager():
     if 'user_id' not in session:
         flash("Please log in to access this page.", "warning")
@@ -184,7 +197,7 @@ def pmanager():
         p.password = decrypt_password(p.password)
     return render_template('password.html', passwords=passwords, current_path=request.path)
 
-@app.route('/password/delete/<id>')
+@app.route('/passwords/delete/<id>')
 def Passdelete(id):
     
     if 'user_id' not in session:
@@ -196,7 +209,7 @@ def Passdelete(id):
     try:
         db.session.delete(password_to_delete)
         db.session.commit()
-        return redirect('/password-manager')
+        return redirect('/passwords')
     except Exception as e:
         logging.error(f"Error Deleting Password: {e}")
         db.session.rollback()
@@ -210,7 +223,7 @@ def index():
         return redirect(url_for('login'))
     return render_template('dashboard.html', current_path=request.path)
 
-@app.route('/task-master', methods=['POST', 'GET'])
+@app.route('/tasks', methods=['POST', 'GET'])
 def tasks():
     if 'user_id' not in session:
         flash("Please log in to access this page.", "warning")
@@ -221,7 +234,7 @@ def tasks():
         new_task = Todo(content=task, user_id=session['user_id'])
         db.session.add(new_task)
         db.session.commit()
-        return redirect("/task-master")
+        return redirect("/tasks")
     else:
         tasks = Todo.query.filter_by(user_id=session['user_id']).order_by(Todo.date_created).all()
         return render_template("task.html", tasks=tasks, current_path=request.path)

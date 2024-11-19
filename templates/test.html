@@ -1,81 +1,61 @@
-{% extends "sidebar.html" %} {% block content %}
+{% extends "base.html" %} {% block head %} {% endblock %} {% block body %}
 
-<div x-data="{ modelOpen: false }">
-                  <button
-                    @click="modelOpen =!modelOpen"
-                    class="justify-center text-white text-md hover:bg-red-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg px-2 py-2"
-                  >
-                    <img src="{{ url_for('static', filename='img/trash-2.svg') }}" alt="" />
-                  </button>
+<section class="min-h-screen flex items-center justify-center">
+  <div class="bg-white p-8 mx-auto w-full max-w-md h-full">
+    <h2 class="text-2xl font-semibold text-center">Log in to your account</h2>
+    <!-- <p class="text-sm text-gray-500 text-center py-4 mb-4">
+      Welcome! Please enter your details
+    </p> -->
+    <p class="text-sm text-red-500 text-center py-4 mb-4">
+      {%for message in get_flashed_messages() %}
+      {{ message }}
+      {% endfor %}
+    </p>
 
-                  <div
-                    x-show="modelOpen"
-                    class="fixed flex justify-center items-center inset-0 z-50 overflow-y-auto"
-                    aria-labelledby="modal-title"
-                    role="dialog"
-                    aria-modal="true"
-                  >
-                    <div
-                      class="flex items-center justify-center px-4 text-center sm:block sm:p-0"
-                    >
-                      <div
-                        x-cloak
-                        @click="modelOpen = true"
-                        x-show="modelOpen"
-                        x-transition:enter="transition ease-out duration-300 transform"
-                        x-transition:enter-start="opacity-0"
-                        x-transition:enter-end="opacity-100"
-                        x-transition:leave="transition ease-in duration-200 transform"
-                        x-transition:leave-start="opacity-100"
-                        x-transition:leave-end="opacity-0"
-                        class="fixed inset-0 transition-opacity bg-gray-700 bg-opacity-60"
-                        aria-hidden="true"
-                      ></div>
+    <form action="/login" method="POST">
+      <div class="mb-4">
+        <label for="email" class="block text-gray-600 font-medium">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          class="mt-1 p-2 w-full border rounded-md"
+          placeholder="Enter your email"
+        />
+      </div>
 
-                      <div
-                        x-cloak
-                        x-show="modelOpen"
-                        x-transition:enter="transition ease-out duration-300 transform"
-                        x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
-                        x-transition:leave="transition ease-in duration-200 transform"
-                        x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
-                        x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        class="inline-block w-fit max-w-md p-6 my-10 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl xl:max-w-xl"
-                      >
-                        <div class="flex items-center justify-between">
-                          <h1
-                            class="text-xl w-full text-center font-bold text-gray-800"
-                          >
-                            Logout
-                          </h1>
-                        </div>
+      <div class="mb-6">
+        <label for="password" class="block text-gray-600 font-medium"
+          >Password</label
+        >
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="mt-1 p-2 w-full border rounded-md"
+          placeholder="Enter your password"
+        />
+      </div>
 
-                        <p class="mt-2 text-md text-gray-800 text-center w-fit">
-                          Are you sure you want to logout of your account?
-                        </p>
+      <div class="w-full flex justify-end pb-5">
+        <a class="text-blue-500 font-semibold text-right text-sm" href="#"
+          >Forgot password</a
+        >
+      </div>
 
-                        <x-text-input name="id" type="hidden" />
-
-                        <div class="flex justify-center mt-6">
-                          <button
-                            for="show"
-                            @click="modelOpen = false"
-                            type="button"
-                            class="mr-2 w-1/2 py-2 text-sm tracking-wide capitalize transition-colors border border-gray-300 duration-200 transform bg-white hover:bg-gray-200 rounded-md"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            @click="window.location.href='/logout'"
-                            class="justify-center text-white text-md bg-red-500 hover:bg-red-600 border border-gray-200 focus:ring-4 focus:outline-none shadow-md focus:ring-gray-100 font-medium rounded-lg text-sm w-1/2 py-2.5 text-center inline-flex items-center"
-                          >
-                            <span>Logout</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-  {% endblock %}
+      <button
+        type="submit"
+        class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 w-full font-semibold"
+      >
+        login
+      </button>
+      <div class="pt-5 flex justify-center">
+        <p class="text-gray-500 text-sm">
+          Don't have an account?
+          <a class="text-blue-500 font-semibold" href="/register">Sign up</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</section>
+{% endblock %}
