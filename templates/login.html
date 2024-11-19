@@ -4,15 +4,19 @@
   <div class="bg-white p-8 mx-auto w-full max-w-md h-full">
     <h2 class="text-2xl font-semibold text-center">Log in to your account</h2>
 
-    {% set messages = get_flashed_messages() %} {% if messages %}
-    <p class="text-sm text-red-500 text-center py-4 mb-4">
-      {% for message in messages %} {{ message }} {% endfor %}
-    </p>
-    {% else %}
-    <p class="text-sm text-gray-500 text-center py-4 mb-4">
-      Welcome! Please enter your details
-    </p>
-    {% endif %}
+    {% with messages = get_flashed_messages(category_filter=["login"]) %}
+      {% if messages %}
+        <p class="text-sm text-red-500 text-center py-4 mb-4">
+          {% for message in messages %}
+            {{ message }}
+          {% endfor %}
+        </p>
+      {% else %}
+        <p class="text-sm text-gray-500 text-center py-4 mb-4">
+          Welcome! Please enter your details
+        </p>
+      {% endif %}
+    {% endwith %}
 
     <form action="{{url_for('login')}}" method="POST">
       <div class="mb-4">
@@ -54,7 +58,7 @@
       <div class="pt-5 flex justify-center">
         <p class="text-gray-500 text-sm">
           Don't have an account?
-          <a class="text-blue-500 font-semibold" href="/register">Sign up</a>
+          <a class="text-blue-500 font-semibold" href="{{url_for('register')}}">Sign up</a>
         </p>
       </div>
     </form>

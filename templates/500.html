@@ -16,10 +16,9 @@
         
         <!-- Navigation Links -->
         <div class="flex gap-2 w-full justify-center items-center">
-            <div><a href="/" class="text-blue-500 hover:underline">Home</a></div>
-            <div><a href="/login" class="text-blue-500 hover:underline">Login</a></div>
-            <div><a href="/tasks" class="text-blue-500 hover:underline">Tasks</a></div>
-            <div><a href="/contact" class="text-blue-500 hover:underline">Contact Support</a></div>
+            <div><a href="{{url_for('dashboard')}}" class="text-blue-500 hover:underline">Home</a></div>
+            <div><a href="{{url_for('login')}}" class="text-blue-500 hover:underline">Login</a></div>
+            <div><a href="{{url_for('tasks')}}" class="text-blue-500 hover:underline">Tasks</a></div>
         </div>
     </div>
 </section>

@@ -12,10 +12,10 @@
         <p class="text-gray-600 mb-4">Here are some helpful links instead:</p>
         
         <div class="flex gap-2 w-full justify-center items-center">
-           <div> <a href="/" class="text-blue-500 hover:underline">Home</a></div>
-           <div> <a href="/login" class="text-blue-500 hover:underline">Login</a></div>
-           <div> <a href="/tasks" class="text-blue-500 hover:underline">tasks</a></div>
-           <div> <a href="/passwords" class="text-blue-500 hover:underline">Passwords</div>
+           <div> <a href="{{url_for('dashboard')}}" class="text-blue-500 hover:underline">Home</a></div>
+           <div> <a href="{{url_for('login')}}" class="text-blue-500 hover:underline">Login</a></div>
+           <div> <a href="{{url_for('tasks')}}" class="text-blue-500 hover:underline">tasks</a></div>
+           <div> <a href="{{url_for('passwords')}}" class="text-blue-500 hover:underline">Passwords</div>
         </div>
     </div>
 </section>
