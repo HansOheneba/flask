@@ -29,6 +29,11 @@
         display: none;
       }
     </style>
+    {% if title %}
+        <title>{{ title }} - HansOheneba</title>
+        {% else %}
+        <title>Welcome to my app</title>
+        {% endif %}
     <!-- <script>
       window.si =
         window.si ||
@@ -45,7 +50,7 @@
         };
     </script>
     <script defer src="/_vercel/insights/script.js"></script> -->
-    {% block head %}{% endblock %}
+    
   </head>
   <body class="text-gray-800">
     {% block body %}{% endblock %}
