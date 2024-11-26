@@ -9,9 +9,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.pool import NullPool
 from werkzeug.security import generate_password_hash, check_password_hash
 from cryptography.fernet import Fernet
-
-
-
+from functools import wraps
 
 load_dotenv()
 
@@ -20,7 +18,6 @@ app = Flask(__name__)
 app.secret_key = os.getenv(
     "secretKey", "40942f9900788e2d16945de4e6211ca44fa7759ee6f2e5f874b5f3cfba1a8d7b"
 )
-logging.basicConfig(level=logging.INFO)
 
 
 app.config["SQLALCHEMY_DATABASE_URI"] = (
@@ -39,6 +36,7 @@ class Users(db.Model):
     username = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(150), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    deleted = db.Column(db.Boolean, default=False)
 
 
 class Todo(db.Model):
@@ -62,6 +60,16 @@ class Passwords(db.Model):
 
 key = os.getenv("encryptionKey")
 cipher_suite = Fernet(key)
+
+
+def protected(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+
+    return decorated
 
 
 def encrypt_password(password):
@@ -128,7 +136,7 @@ def register():
             db.session.rollback()
             flash("Username or Email already exists.", "danger")
             return render_template("register.html")
-    return render_template("register.html")
+    return render_template("register.html", title = "Register")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -141,7 +149,7 @@ def login():
         password = request.form["password"]
 
         user = Users.query.filter_by(email=email).first()
-        if user and check_password_hash(user.password, password):
+        if user and not user.deleted and check_password_hash(user.password, password):
             session["user_id"] = user.id
             session["username"] = user.username
             session["email"] = user.email
@@ -149,9 +157,11 @@ def login():
             session["lastname"] = user.lastname
             flash("Login successful.", "success")
             return redirect(url_for("dashboard"))
+        elif user and user.deleted:
+            flash("Account has been deleted. Please contact support.", "login")
         else:
             flash("Invalid login credentials.", "login")
-    return render_template("login.html")
+    return render_template("login.html", title="Login")
 
 
 @app.route("/logout")
@@ -179,11 +189,8 @@ def test():
 
 
 @app.route("/passwords", methods=["GET", "POST"])
+@protected
 def passwords():
-    if "user_id" not in session:
-        flash("Please log in to access this page.", "warning")
-        return redirect(url_for("login"))
-
     if request.method == "POST":
         title = request.form["title"]
         username = request.form["username"]
@@ -214,16 +221,17 @@ def passwords():
     for p in passwords:
         p.password = decrypt_password(p.password)
     return render_template(
-        "password.html", passwords=passwords, current_path=request.path
+        "password.html",
+        passwords=passwords,
+        current_path=request.path,
+        title="Passwords"
     )
 
 
 @app.route("/passwords/delete/<id>")
+@protected
 def Passdelete(id):
 
-    if "user_id" not in session:
-        flash("Please log in to access this page.", "warning")
-        return redirect(url_for("login"))
 
     password_to_delete = Passwords.query.get_or_404(id)
 
@@ -238,9 +246,9 @@ def Passdelete(id):
 
 
 @app.route("/")
+@protected
 def dashboard():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
+
     # Query database to get counts
     total_tasks = Todo.query.filter_by(user_id=session["user_id"]).count()
     total_passwords = Passwords.query.filter_by(user_id=session["user_id"]).count()
@@ -258,14 +266,13 @@ def dashboard():
         total_passwords=total_passwords,
         pending_tasks=pending_tasks,
         completed_tasks=completed_tasks,
+        title="Dashboard",
     )
 
 
 @app.route("/tasks", methods=["POST", "GET"])
+@protected
 def tasks():
-    if "user_id" not in session:
-        flash("Please log in to access this page.", "warning")
-        return redirect(url_for("login"))
 
     if request.method == "POST":
         task = request.form["content"]
@@ -279,15 +286,14 @@ def tasks():
             .order_by(Todo.date_created)
             .all()
         )
-        return render_template("task.html", tasks=tasks, current_path=request.path)
+        return render_template(
+            "task.html", tasks=tasks, current_path=request.path, title="Tasks"
+        )
 
 
 @app.route("/delete/<id>")
+@protected
 def delete(id):
-
-    if "user_id" not in session:
-        flash("Please log in to access this page.", "warning")
-        return redirect(url_for("login"))
 
     task_to_delete = Todo.query.get_or_404(id)
 
@@ -302,11 +308,9 @@ def delete(id):
 
 
 @app.route("/update/<id>", methods=["GET", "POST"])
+@protected
 def update(id):
 
-    if "user_id" not in session:
-        flash("Please log in to access this page.", "warning")
-        return redirect(url_for("login"))
 
     task = Todo.query.get_or_404(id)
     if request.method == "POST":
@@ -324,9 +328,8 @@ def update(id):
 
 
 @app.route("/settings", methods=["GET", "POST"])
+@protected
 def settings():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
 
     user_id = session["user_id"]
     user = db.session.get(Users, user_id)
@@ -364,35 +367,70 @@ def settings():
                 "danger",
             )
 
-    return render_template("settings.html", user=user)
+    return render_template(
+        "settings.html", user=user, current_path=request.path, title="Settings"
+    )
+
+
+@app.route("/update_user", methods=["POST"])
+@protected
+def update_user():
+    user_id = session["user_id"]
+    user = db.session.get(Users, user_id)
+
+    # Ensure the user exists
+    if not user:
+        flash("User not found!", "danger")
+        return redirect(url_for("settings"))
+
+    # Get updated details from the form
+    firstname = request.form.get("firstname")
+    lastname = request.form.get("lastname")
+    email = request.form.get("email")
+
+    # Ensure the user_id is not being modified
+    if user.id != user_id:
+        flash("You cannot modify the user ID.", "danger")
+        return redirect(url_for("settings"))
+
+    # Update user details
+    user.firstname = firstname
+    user.lastname = lastname
+    user.email = email
+
+    try:
+        db.session.commit()
+        flash("User details updated successfully!", "success")
+        return redirect(url_for("settings"))
+    except Exception as e:
+        db.session.rollback()
+        flash(
+            "An error occurred while updating your details. Please try again.", "danger"
+        )
+        return redirect(url_for("settings"))
 
 
 @app.route("/delete_user", methods=["POST"])
-
+@protected
 def delete_user():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
     try:
-        # Fetch the current user
-        user_id = session['user_id']
+        user_id = session["user_id"]
         user = Users.query.get(user_id)
 
         if not user:
             flash("User not found!", "danger")
             return redirect(url_for("settings"))
 
-        # Delete the user from the database
-        db.session.delete(user)
+        user.deleted = True
         db.session.commit()
 
-        # Clear session and logout the user
         session.clear()
-        flash("Your account has been deleted successfully.", "success")
-        return redirect(url_for("home"))  # Redirect to the home page or login page
+        flash("Your account has been deactivated successfully.", "success")
+        return redirect(url_for("dashboard")) 
     except Exception as e:
         db.session.rollback()
         flash(
-            "An error occurred while trying to delete your account. Please try again.",
+            "An error occurred while trying to deactivate your account. Please try again.",
             "danger",
         )
         return redirect(url_for("settings"))

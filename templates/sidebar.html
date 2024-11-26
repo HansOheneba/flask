@@ -16,15 +16,15 @@
              </div>
             </a>
             <a href="{{url_for('tasks')}}">
-             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/task-master' else ' hover:bg-gray-100' }}">
+             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/tasks' else ' hover:bg-gray-100' }}">
               <img src="{{url_for('static', filename='img/notepad.svg')}}" alt="">
-              <h4 class="font-semibold {{'text-blue-600' if current_path == '/task-master' else 'text-gray-700'}} ">Task Master</h4>
+              <h4 class="font-semibold {{'text-blue-600' if current_path == '/tasks' else 'text-gray-700'}} ">Task Master</h4>
              </div>
             </a>
             <a href="{{url_for('passwords')}}">
-             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/password-manager' else ' hover:bg-gray-100' }}">
+             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/passwords' else ' hover:bg-gray-100' }}">
               <img src="{{url_for('static', filename='img/key.svg')}}" alt="">
-              <h4 class="font-semibold {{'text-blue-600' if current_path == '/password-manager' else 'text-gray-700'}} ">Password Manager</h4>
+              <h4 class="font-semibold {{'text-blue-600' if current_path == '/passwords' else 'text-gray-700'}} ">Password Manager</h4>
              </div>
             </a>
 

@@ -3,13 +3,13 @@
   <div class="pb-10">
     <h1 class="font-bold text-xl">Settings</h1>
   </div>
-  <form method="POST" action="{{ url_for('settings') }}">
+
     <div
       class="border border-gray-200 p-10 rounded-lg flex flex-col justify-center"
     >
       <div class="w-1/2 mx-auto flex flex-col gap-5">
-        <h1 class="font-bold text-lg py-5">Account Settings</h1>
-
+        <h1 class="font-bold text-lg py-5">Account Details</h1>
+        
         <!-- Username (Read-only) -->
         <div class="mb-4">
           <label for="currentUsername" class="block text-sm font-medium"
@@ -66,8 +66,6 @@
             value="{{ user.email }}"
           />
         </div>
-    </form>
-
         <!-- Change Password Modal -->
         <div>
           <div class="py-3">
@@ -251,12 +249,12 @@
                 >
                   Cancel
                 </button>
-                <button
-                  @click="modalIsOpen = false"
-                  class="justify-center text-white text-md bg-red-500 hover:bg-red-600 border border-gray-200 focus:ring-4 focus:outline-none shadow-md focus:ring-gray-100 font-medium rounded-lg text-sm w-1/2 py-2.5 text-center inline-flex items-center"
-                >
-                  Delete
-                </button>
+  
+                  <button><form action="{{ url_for('delete_user') }}" method="POST">
+    <button type="submit" class="justify-center text-white text-md bg-red-500 hover:bg-red-600 border border-gray-200 focus:ring-4 focus:outline-none shadow-md focus:ring-gray-100 font-medium rounded-lg text-sm w-1/2 py-2.5 text-center inline-flex items-center">Delete</button>
+</form>
+</button>
+          
               </div>
             </div>
           </div>
