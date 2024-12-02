@@ -1,74 +1,233 @@
-{% extends "base.html" %}  {% block body %}
+{% extends "sidebar.html" %} {% block content %}
 
-   <section class="min-h-screen flex items-center justify-center">
+<h2 class="font-bold text-xl py-5">Password Manager</h2>
 
-       
-        
+<div class="bg-white rounded">
+  {% if not passwords%}
+  <div class="bg-white rounded-lg shadow p-6 text-center">
+    <i class="fa-solid fa-lock-open text-3xl py-5"></i>
+    <h2 class="text-2xl py-5 font-semibold text-gray-800">No Passwords Added Yet</h2>
+    <p class="text-gray-600 mt-2">
+      You haven't added any passwords. Start securing your accounts now.
+    </p>
+    <div class="flex justify-center items-center p-5">
+      <div x-data="{ modelOpen: false }">
+        <button
+          @click="modelOpen =!modelOpen"
+          class="bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring px-2 focus:border-blue-300 w-fit font-semibold flex gap-1"
+        >
+          <img
+            src="{{url_for('static', filename='img/add-icon.svg')}}"
+            alt=""
+          />
+          <p>Add a Password</p>
+        </button>
 
-        <div class="bg-white p-8 mx-auto w-full max-w-md h-full">
-            <h2 class="text-2xl font-semibold mb-6 text-center">Create an account</h2>
+        <div
+          x-show="modelOpen"
+          class="fixed flex justify-center items-center inset-0 z-50 overflow-y-auto"
+          aria-labelledby="modal-title"
+          role="dialog"
+          aria-modal="true"
+        >
+          <div
+            class="flex items-center justify-center px-4 text-center sm:block sm:p-0"
+          >
+            <div
+              x-cloak
+              @click="modelOpen = true"
+              x-show="modelOpen"
+              x-transition:enter="transition ease-out duration-300 transform"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="transition ease-in duration-200 transform"
+              x-transition:leave-start="opacity-100"
+              x-transition:leave-end="opacity-0"
+              class="fixed inset-0 transition-opacity bg-gray-700 bg-opacity-60"
+              aria-hidden="true"
+            ></div>
 
+            <div
+              x-cloak
+              x-show="modelOpen"
+              x-transition:enter="transition ease-out duration-300 transform"
+              x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+              x-transition:leave="transition ease-in duration-200 transform"
+              x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+              x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              class="inline-block w-[400px] p-6 my-10 overflow-hidden text-left transition-all transform bg-white rounded-lg shadow-xl xl:max-w-xl"
+              style="z-index: 100"
+            >
+              <div class="flex items-center justify-between">
+                <h1 class="text-xl w-full font-bold text-gray-800">
+                  Add a Password
+                </h1>
+              </div>
 
-            <form action="/register" method="post">
+              <p class="mt-2 pb-3 text-md text-gray-800 w-fit">
+                Enter the credentials of the new entry
+              </p>
 
-
-                <div class="mb-4">
-                    <label for="firstame" class="block text-gray-600 font-medium">First name</label>
-                    <input type="text" id="firstname" name="firstname" class="mt-1 p-2 w-full border rounded-md"
-                        placeholder="Enter your first name">
+              <form action="/passwords" method="post">
+                <div class="py-2">
+                  <label for="title" class="text-gray-600 text-sm font-medium"
+                    >Title</label
+                  ><br />
+                  <input
+                    type="text"
+                    id="title"
+                    name="title"
+                    placeholder="eg.Google"
+                    class="p-2 w-full border rounded-lg bg-white cursor-pointer text-gray-400"
+                  />
                 </div>
-                <div class="mb-4">
-                    <label for="lastname" class="block text-gray-600 font-medium">Last name</label>
-                    <input type="text" id="lastname" name="lastname" class="mt-1 p-2 w-full border rounded-md"
-                        placeholder="Enter your last name">
+                <div class="py-2">
+                  <label
+                    for="username"
+                    class="text-gray-600 text-sm font-medium"
+                    >Username</label
+                  ><br />
+                  <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="eg. johndoe@gmail.com"
+                    class="p-2 w-full border rounded-lg bg-white cursor-pointer text-gray-400"
+                  />
                 </div>
 
-
-                <div class="mb-4">
-                    <label for="username" class="block text-gray-600 font-medium">Username</label>
-                    <input type="text" id="username" name="username" class="mt-1 p-2 w-full border rounded-md"
-                        placeholder="Create a username">
-                    <p class="text-sm text-gray-500 mt-1">Cannot be changed after signing up</p>
-                </div>
-
-
-                <div class="mb-4">
-                    <label for="email" class="block text-gray-600 font-medium">Email</label>
-                    <input type="email" id="email" name="email" class="mt-1 p-2 w-full border rounded-md"
-                        placeholder="Enter your email">
-                </div>
-
-
-                <div class="mb-6">
-                    <label for="password" class="block text-gray-600 font-medium">Password</label>
-                    <input type="password" id="password" name="password" class="mt-1 p-2 w-full border rounded-md"
-                        placeholder="Create a password">
-                    <p class="text-sm text-gray-500 mt-1">Must be at least 8 characters</p>
-                </div>
-                <div class="mb-6">
-                    <label for="confirm_password" class="block text-gray-600 font-medium">Confirm password</label>
-                    <input type="password" id="confirm_password" name="confirm_password"
-                        class="mt-1 p-2 w-full border rounded-md" placeholder="Repeat password">
-                </div>
-
-
-
-                <button type="submit"
-                    class="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 w-full font-semibold "
+                <div class="mb-4 py-2">
+                  <label
+                    for="domain"
+                    class="block text-gray-600 text-sm font-medium"
+                    >Domain</label
                   >
-                    Create Account
-                </button>
-
-                <div class="pt-5 flex justify-center">
-                    <p class="text-gray-500 text-sm">Already have an account? <a class="text-blue-500 font-semibold"
-                            href="{{url_for('login')}}">Log in</a></p>
+                  <input
+                    type="text"
+                    id="domain"
+                    name="domain"
+                    class="p-2 w-full border rounded-md"
+                    placeholder="eg. google.com"
+                  />
+                </div>
+                <div class="mb-4 py-2">
+                  <label
+                    for="name"
+                    class="block text-gray-600 text-sm font-medium"
+                    >Password</label
+                  >
+                  <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="p-2 w-full border rounded-md"
+                    placeholder="Enter password"
+                  />
+                </div>
+                <div class="mb-4 py-2">
+                  <label
+                    for="name"
+                    class="block text-gray-600 text-sm font-medium"
+                    >Confirm Password</label
+                  >
+                  <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    class="p-2 w-full border rounded-md"
+                    placeholder="Confirm password"
+                  />
                 </div>
 
-                <div id="messageContainer" class="message-container hidden">
-                    <div id="successMessage" class="message success hidden"></div>
-                    <div id="errorMessage" class="message error hidden"></div>
+                <div class="flex justify-center mt-6">
+                  <button
+                    @click="modelOpen = false"
+                    type="button"
+                    class="mr-2 w-1/2 py-2 text-sm tracking-wide capitalize transition-colors border border-gray-300 duration-200 transform bg-white hover:bg-gray-200 rounded-md"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    for="show"
+                    @click="modelOpen = false"
+                    type="submit"
+                    class="justify-center bg-blue-500 text-white hover:bg-blue-600 focus:ring focus:outline-none shadow-md focus:ring-gray-100 font-medium rounded-lg text-sm w-1/2 py-2.5 text-center inline-flex items-center"
+                  >
+                    <span><input type="submit" value="Add Password" /></span>
+                  </button>
                 </div>
-            </form>
+              </form>
+            </div>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+
+  {% else %}
+
+  <div class="flex justify-between p-5">
+    <h3 class="font-semibold">Saved Passwords</h3>
+  </div>
+  <div class="flex flex-col">
+    <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+      <div class="inline-block min-w-full sm:px-6 lg:px-8">
+        <div class="overflow-hidden">
+          <article class="content">
+            <table class="min-w-full text-left text-sm font-light">
+              <thead
+                class="border-b font-extralight text-xs text-slate-500 bg-slate-100/50 h-full border-gray-200"
+              >
+                <tr>
+                  <th scope="col" class="px-6 py-2">Service</th>
+                  <th scope="col" class="px-6 py-2">Username</th>
+                  <th scope="col" class="px-6 py-2">Domain</th>
+                  <th scope="col" class="px-6 py-2">Password</th>
+                  <th scope="col" class="py-2"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for password in passwords %}
+
+                <tr class="border-b border-gray-200">
+                  <td class="whitespace-nowrap px-6 py-4 font-medium">
+                    <div class="flex items-center gap-3">
+                      {{password.title}}
+                    </div>
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4 font-medium">
+                    <div class="flex items-center gap-3">
+                      {{password.username}}
+                    </div>
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4">
+                    {{password.domain}}
+                  </td>
+                  <td class="whitespace-nowrap px-6 py-4">
+                    {{password.password}}
+                  </td>
+                  <td>
+                    <form action="">
+                      <button class="px-3">
+                        <img
+                          src="{{url_for('static', filename='img/trash-2.svg')}}"
+                          alt="delete button"
+                        />
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+
+                {% endfor %}
+              </tbody>
+            </table>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+
 {% endblock %}

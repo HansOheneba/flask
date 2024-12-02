@@ -185,7 +185,11 @@ def pp():
 
 @app.route("/test/")
 def test():
-    return render_template("test.html")
+    passwords=Passwords.query.filter_by(user_id=session["user_id"]).all()
+    return render_template(
+        "test.html",
+        passwords=passwords
+    )
 
 
 @app.route("/passwords", methods=["GET", "POST"])

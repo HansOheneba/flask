@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='img/handicon.png')}}">
     <script
       defer
       src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
@@ -34,7 +35,7 @@
         {% else %}
         <title>Welcome to my app</title>
         {% endif %}
-    <script>
+    <!-- <script>
       window.si =
         window.si ||
         function () {
@@ -50,7 +51,7 @@
         };
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
-    
+     -->
   </head>
   <body class="text-gray-800">
     {% block body %}{% endblock %}

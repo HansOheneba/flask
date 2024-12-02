@@ -1,8 +1,8 @@
 {% extends "base.html" %}  {% block body %}
 
-<section class="flex h-screen overflow-auto">
+<section  class="flex h-screen overflow-auto text-sm">
       <div
-        class="w-1/5 border-r-2 h-full border-gray-200 p-6 flex flex-col justify-between sticky top-0"
+        class="w-1/6 border-r-2 h-full border-gray-200 p-6 flex flex-col justify-between sticky top-0"
       >
         <div class="flex flex-col gap-2">
  
@@ -10,19 +10,19 @@
    
             
             <a href="{{url_for('dashboard')}}">
-             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/' else ' hover:bg-gray-100' }}">
+             <div class="flex items-center w-full py-2 rounded-lg pl-2 gap-3 {{ ' bg-blue-200' if current_path == '/' else ' hover:bg-gray-100' }}">
               <img src="{{url_for('static', filename='img/home.svg')}}" alt="">
               <h4 class="font-semibold {{'text-blue-600' if current_path == '/' else 'text-gray-700'}} ">Home</h4>
              </div>
             </a>
             <a href="{{url_for('tasks')}}">
-             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/tasks' else ' hover:bg-gray-100' }}">
+             <div class="flex items-center w-full py-2 rounded-lg pl-2 gap-3 {{ ' bg-blue-200' if current_path == '/tasks' else ' hover:bg-gray-100' }}">
               <img src="{{url_for('static', filename='img/notepad.svg')}}" alt="">
               <h4 class="font-semibold {{'text-blue-600' if current_path == '/tasks' else 'text-gray-700'}} ">Task Master</h4>
              </div>
             </a>
             <a href="{{url_for('passwords')}}">
-             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 {{ ' bg-blue-200' if current_path == '/passwords' else ' hover:bg-gray-100' }}">
+             <div class="flex items-center w-full py-2 rounded-lg pl-2 gap-3 {{ ' bg-blue-200' if current_path == '/passwords' else ' hover:bg-gray-100' }}">
               <img src="{{url_for('static', filename='img/key.svg')}}" alt="">
               <h4 class="font-semibold {{'text-blue-600' if current_path == '/passwords' else 'text-gray-700'}} ">Password Manager</h4>
              </div>
@@ -37,7 +37,7 @@
 
         <div>
            <a href="{{url_for('settings')}}">
-             <div class="flex w-full py-3 rounded-lg pl-2 gap-5 mb-3 {{ ' bg-blue-200' if current_path == '/settings' else ' hover:bg-gray-100' }}">
+             <div class="flex items-center w-full py-3 rounded-lg pl-2 gap-5 mb-3 {{ ' bg-blue-200' if current_path == '/settings' else ' hover:bg-gray-100' }}">
               <img src="{{url_for('static', filename='img/settings.svg')}}" alt="">
               <h4 class="font-semibold {{'text-blue-600' if current_path == '/settings' else 'text-gray-700'}} ">Settings</h4>
              </div>
@@ -45,9 +45,9 @@
           <hr />
           <div class="flex pl-2 py-3">
             <div class="bg-blue-100 rounded-full h-fit p-2">
-              <img src="{{ url_for('static', filename='img/user.svg') }}" alt="" />
+              <i class="fa-regular fa-user text-blue-500 font-bold px-1"></i>
             </div>
-            <div class="pl-2 w-full">
+            <div class="pl-2 w-full overflow-hidden">
               <div class="flex justify-between items-center">
                 <p id="username" class="font-semibold username">{{session.username}}</p>
               
@@ -129,7 +129,7 @@
                   </div>
                 </div>
               </div>
-              <p id="userEmail" class="userEmail text-sm text-gray-500">
+              <p id="userEmail" class="userEmail text-xs text-gray-500">
                 {{session.email}}
               </p>
             </div>
